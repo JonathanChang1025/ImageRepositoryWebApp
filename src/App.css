@@ -1,0 +1,7 @@
+.bg-myRed{
+  background-color: crimson;
+}
+
+.ml-auto, .mx-auto {
+  margin-left: auto!important;
+}
