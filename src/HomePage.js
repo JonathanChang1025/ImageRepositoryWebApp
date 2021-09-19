@@ -1,10 +1,19 @@
 import React from "react";
+import useFirestore from "./hooks/useFirestore"
 
-const HomePage = () => (
-    <div>
-        <h1>Home Page</h1>
-        <p>This is the home page</p>
-    </div>
-);
+const HomePage = () => {
+    const { docs } = useFirestore("images");
+    console.log(docs);
+
+    return (
+        <div className="img-grid">
+            { docs && docs.map(doc => (
+                <div className="img-wrap" key={doc.id}>
+                    <img src={doc.url} alt="uploaded image"/>
+                </div>
+            ))}
+        </div>
+    )
+};
 
 export default HomePage;

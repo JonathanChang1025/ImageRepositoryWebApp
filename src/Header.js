@@ -4,8 +4,7 @@ import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPers
 import { Nav, Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import logo from "./logo.svg";
-import auth from "./service/firebase";
-import { firebase } from "./service/firebase";
+import { firebase, auth} from "./service/firebase";
 import "firebase/compat/auth";
 
 
@@ -48,7 +47,7 @@ const Header = () => {
             sticky="top">
             <Navbar.Brand>
                 <img src={logo} width="40px" height="40px"/>
-                Logo
+                Image Repository
             </Navbar.Brand>
             <Nav>
                 <Nav.Link className="ms-auto" href="./">Home</Nav.Link>
