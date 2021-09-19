@@ -3,17 +3,17 @@ import './App.css';
 import { Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import HomePage from "./HomePage";
-import UploadPage from "./UploadPage";
-import SignInPage from "./SignInPage";
+import UploadImagePage from "./UploadImagePage";
+import MyImagesPage from "./MyImagesPage";
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/upload" component={UploadPage} />
-        <Route path="/signin" component={SignInPage} />
+        <Route exact path="/" component={ HomePage } />
+        <Route path="/myimages" component={ MyImagesPage } />
+        <Route path="/uploadimage" component={ UploadImagePage } />
       </Switch>
     </div>
   );
