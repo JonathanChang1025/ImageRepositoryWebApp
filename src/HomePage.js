@@ -1,19 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import useFirestore from "./hooks/useFirestore"
 
 const HomePage = () => {
-    const { docs } = useFirestore("images");
-    console.log(docs);
+    const { docs } = useFirestore("images", "");
+
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleBackdropClick = (e) => {
+        if (e.target.classList.contains("backdrop")) {
+            setSelectedImage(null);
+        }
+    }
 
     return (
-        <div className="img-grid">
-            { docs && docs.map(doc => (
-                <div className="img-wrap" key={doc.id}>
-                    <img src={doc.url} alt="uploaded image"/>
-                </div>
-            ))}
+        <div>
+            <div className="img-grid">
+                {
+                docs && docs.map(doc => (
+                    <div className="img-wrap" key={doc.id}
+                        onClick={() => setSelectedImage(doc.url)}>
+                        <img src={doc.url} alt="uploaded image"/>
+                        <h4><span className="txt-wrap"><span className="title-wrap">{doc.titleValue}</span> by {doc.displayName}</span></h4>
+                    </div>
+                ))
+                }
+            </div>
+
+            {
+            selectedImage
+            &&
+            <div className="backdrop" onClick={handleBackdropClick}>
+                <h1> Test </h1>
+                <img src={selectedImage} alt="enlarged selected image"/> 
+            </div>
+            }
+
         </div>
-    )
-};
+        
+    );
+}
 
 export default HomePage;

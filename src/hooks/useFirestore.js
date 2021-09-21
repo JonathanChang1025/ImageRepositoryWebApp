@@ -10,7 +10,9 @@ const useFirestore = (collection) => {
         .onSnapshot((snap) => {
             const documents = [];
             snap.forEach(doc => {
-                documents.push({...doc.data(), id: doc.id})
+                if (doc.data().privacyValue == 0) {
+                    documents.push({...doc.data(), id: doc.id})
+                }
             });
             setDocs(documents);
         });
@@ -22,4 +24,4 @@ const useFirestore = (collection) => {
     return {docs};
 }
 
-export default useFirestore;
+export  default useFirestore;

@@ -7,9 +7,10 @@ import UploadImagePage from "./UploadImagePage";
 import MyImagesPage from "./MyImagesPage";
 
 function App() {
+
   return (
     <div className="App">
-      <Header />
+      <Header setUserData/>
       <Switch>
         <Route exact path="/" component={ HomePage } />
         <Route path="/myimages" component={ MyImagesPage } />

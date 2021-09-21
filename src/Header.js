@@ -1,32 +1,32 @@
 import React, {useState} from "react";
-import { Route, Switch, NavLink } from "react-router-dom";
-import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "firebase/auth";
+import { Route, Redirect, useHistory} from "react-router-dom";
+import { getAuth } from "firebase/auth";
 import { Nav, Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import logo from "./logo.svg";
-import { firebase, auth} from "./service/firebase";
+import { firebase, auth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence} from "./service/firebase";
 import "firebase/compat/auth";
+import HomePage from "./HomePage";
 
 
 const Header = () => {
+    const history = useHistory();
 
-    const auth = getAuth();
+    const [displayName, setDisplayName] = useState("");
 
-    const [isUserSignedIn, setIsUserSignedIn] = useState(false);
-
-    firebase.auth().onAuthStateChanged((user)=>{
-        console.log("state changed");
+    auth.onAuthStateChanged((user)=>{
         if (user) {
-            return setIsUserSignedIn(true);
+            setDisplayName(user.displayName);
         } else {
-            return setIsUserSignedIn(false);
+            setDisplayName("");
         }
     });    
 
     const signInWithFirebase = () => {
+        firebase.auth().setPersistence("session");
         var provider = new firebase.auth.GoogleAuthProvider();
         
-        firebase.auth().signInWithPopup(provider)
+        auth.signInWithPopup(provider)
         .then((re)=>{
             console.log(re);
         })
@@ -37,7 +37,8 @@ const Header = () => {
     }
 
     const signOut = () => {
-        firebase.auth().signOut();
+        auth.signOut();
+        history.push("/");
     }
 
     return (
@@ -51,16 +52,25 @@ const Header = () => {
             </Navbar.Brand>
             <Nav>
                 <Nav.Link className="ms-auto" href="./">Home</Nav.Link>
-                <Nav.Link className="ms-auto" href="./myimages">My Images</Nav.Link>
-                <Nav.Link className="ms-auto" href="./uploadimage">Upload</Nav.Link>
+                {displayName
+                ?
+                <Nav>
+                    <Nav.Link className="ms-auto" href="./myimages">My Images</Nav.Link>
+                    <Nav.Link className="ms-auto" href="./uploadimage">Upload</Nav.Link>
+                </Nav>
+                :<></>
+                }
             </Nav>
             <Nav className="ml-auto">
-                {isUserSignedIn
-                ? <Nav>
-                    <Nav.Link className="ms-auto" onClick={ signOut }>Welcome</Nav.Link>
+                {
+                displayName
+                ?
+                <Nav>
+                    <Nav.Link className="ms-auto">Welcome  {displayName}</Nav.Link>
                     <Nav.Link className="ms-auto" onClick={ signOut }>Sign Out</Nav.Link>
-                    </Nav>
-                : <Nav.Link className="ms-auto" onClick={ signInWithFirebase }>Sign In</Nav.Link>
+                </Nav>
+                :
+                <Nav.Link className="ms-auto" onClick={ signInWithFirebase }>Sign In</Nav.Link>
                 }
             </Nav>
         </Navbar>

@@ -1,20 +1,36 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { storage, firestore, timestamp } from "./service/firebase";
 import { Button, Card, Form, ButtonGroup, ToggleButton, ProgressBar } from "react-bootstrap";
+import { firebase } from "./service/firebase";
+import "firebase/compat/auth";
 
 const UploadImagePage = () => {
 
     const types = ["image/png", "image/jpeg"];
 
-    const [checked, setChecked] = useState(false);
-    const [radioValue, setRadioValue] = useState('0');
-    const radios = [
-        { name: 'Public', value: '0' },
-        { name: 'Private', value: '1' },
-      ];
-
+    const [uid, setUid] = useState("");
+    const [displayName, setDisplayName] = useState("");
+    const [titleValue, setTitleValue] = useState("")
+    const [privacyValue, setPrivacyValue] = useState("0");
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [progress, setProgress] = useState(0);
+
+    const radios = [
+        { name: "Public", value: "0" },
+        { name: "Private", value: "1" },
+      ];
+
+      firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+              setUid(user.uid);
+              setDisplayName(user.displayName);
+          } else {
+              setUid("");
+              setDisplayName("");
+          }
+      });
 
     const handleFile = (e) => {
         const imageFile = e.target.files[0];
@@ -27,7 +43,6 @@ const UploadImagePage = () => {
         }
     };
 
-    const [progress, setProgress] = useState(0);
     const collectionRef = firestore.collection("images");
     const handleUpload = (e) => {
         const uploadTask = storage.ref(`images/${image.name}`).put(image);
@@ -48,6 +63,10 @@ const UploadImagePage = () => {
                         console.log(url);
                         const createdAt = timestamp();
                         collectionRef.add({
+                            uid,
+                            titleValue,
+                            displayName,
+                            privacyValue,
                             url,
                             createdAt
                         });
@@ -63,7 +82,12 @@ const UploadImagePage = () => {
                     <h2 className="text-center mb-4">Image Upload</h2>
                     <Form>
                         <Form.Group id="photoTitle">
-                            <Form.Control type="text" placeholder="Title"/>
+                            <Form.Control
+                                type="text"
+                                placeholder="Title"
+                                value={ titleValue }
+                                onChange={ (e) => {setTitleValue(e.currentTarget.value)}}
+                                />
                         </Form.Group>
 
                         <Form.Group className="mb-3" style={{ marginTop: "30px" }}>
@@ -79,8 +103,8 @@ const UploadImagePage = () => {
                                 variant="outline-danger"
                                 name="radio"
                                 value={radio.value}
-                                checked={radioValue === radio.value}
-                                onChange={(e) => {setRadioValue(e.currentTarget.value)}}
+                                checked={privacyValue === radio.value}
+                                onChange={(e) => {setPrivacyValue(e.currentTarget.value)}}
                             >
                                 {radio.name}
                             </ToggleButton>
@@ -92,9 +116,12 @@ const UploadImagePage = () => {
                         <div style={{marginTop: "30px"}}>
                             <ProgressBar animated now={progress} label={progress==100?"Success":`${progress}%`}/>
                         </div>
-                        {preview
-                        ?<img src={preview} alt="preview image" style={{width: "100%", height: "100%", marginTop: "30px", borderRadius: "8px"}}/>
-                        :<></>
+                        {
+                        preview
+                        ?
+                        <img src={preview} alt="preview image" style={{width: "100%", height: "100%", marginTop: "30px", borderRadius: "8px"}}/>
+                        :
+                        <></>
                         }
                     </Form>
                 </Card.Body>
