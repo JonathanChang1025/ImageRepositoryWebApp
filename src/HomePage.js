@@ -19,7 +19,7 @@ const HomePage = () => {
                 docs && docs.map(doc => (
                     <div className="img-wrap" key={doc.id}
                         onClick={() => setSelectedImage(doc.url)}>
-                        <img src={doc.url} alt="uploaded image"/>
+                        <img src={doc.url} alt="uploaded content from users"/>
                         <h4><span className="txt-wrap"><span className="title-wrap">{doc.titleValue}</span> by {doc.displayName}</span></h4>
                     </div>
                 ))
@@ -31,7 +31,7 @@ const HomePage = () => {
             &&
             <div className="backdrop" onClick={handleBackdropClick}>
                 <h1> Test </h1>
-                <img src={selectedImage} alt="enlarged selected image"/> 
+                <img src={selectedImage} alt="enlarged selected content"/> 
             </div>
             }
 

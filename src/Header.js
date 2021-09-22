@@ -1,13 +1,10 @@
 import React, {useState} from "react";
-import { Route, Redirect, useHistory} from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { useHistory} from "react-router-dom";
 import { Nav, Navbar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import logo from "./logo.svg";
-import { firebase, auth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence} from "./service/firebase";
+import { firebase, auth } from "./service/firebase";
 import "firebase/compat/auth";
-import HomePage from "./HomePage";
-
 
 const Header = () => {
     const history = useHistory();
@@ -47,7 +44,7 @@ const Header = () => {
             variant="dark"
             sticky="top">
             <Navbar.Brand>
-                <img src={logo} width="40px" height="40px"/>
+                <img src={logo} width="40px" height="40px" alt="Brand logo"/>
                 Image Repository
             </Navbar.Brand>
             <Nav>

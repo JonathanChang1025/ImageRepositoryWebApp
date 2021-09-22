@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
 import { storage, firestore, timestamp } from "./service/firebase";
 import { Button, Card, Form, ButtonGroup, ToggleButton, ProgressBar } from "react-bootstrap";
 import { firebase } from "./service/firebase";
@@ -114,12 +113,12 @@ const UploadImagePage = () => {
                             <Button variant="primary" onClick={handleUpload}>Upload</Button>
                         </div>
                         <div style={{marginTop: "30px"}}>
-                            <ProgressBar animated now={progress} label={progress==100?"Success":`${progress}%`}/>
+                            <ProgressBar animated now={progress} label={progress===100?"Success":`${progress}%`}/>
                         </div>
                         {
                         preview
                         ?
-                        <img src={preview} alt="preview image" style={{width: "100%", height: "100%", marginTop: "30px", borderRadius: "8px"}}/>
+                        <img src={preview} alt="preview of content selected" style={{width: "100%", height: "100%", marginTop: "30px", borderRadius: "8px"}}/>
                         :
                         <></>
                         }

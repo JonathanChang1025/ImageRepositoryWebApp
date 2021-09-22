@@ -44,8 +44,8 @@ const MyImagesPage = () => {
                 { docs && docs.map(doc => (
                     <div className="img-wrap" key={doc.id}
                         onClick={() => setSelectedImage(doc.url)}>
-                        <img src={doc.url} alt="uploaded image"/>
-                        <h4><span className="txt-wrap"><span className="privacy-wrap">{doc.privacyValue==1?"Private\t":"Public\t"}</span><span className="title-wrap">{doc.titleValue}</span></span></h4>
+                        <img src={doc.url} alt="uploaded content from user"/>
+                        <h4><span className="txt-wrap"><span className="privacy-wrap">{doc.privacyValue===1?"Private\t":"Public\t"}</span><span className="title-wrap">{doc.titleValue}</span></span></h4>
                     </div>
                 ))}
             </div>
@@ -54,7 +54,7 @@ const MyImagesPage = () => {
             selectedImage
             &&
             <div className="backdrop" onClick={handleBackdropClick}>
-                <img src={selectedImage} alt="enlarged image"/> 
+                <img src={selectedImage} alt="enlarged content selected by user"/> 
             </div>
             }
 
