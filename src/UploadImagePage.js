@@ -44,34 +44,36 @@ const UploadImagePage = () => {
 
     const collectionRef = firestore.collection("images");
     const handleUpload = (e) => {
-        const uploadTask = storage.ref(`images/${image.name}`).put(image);
-        uploadTask.on(
-            "state_changed",
-            snapshot => {
-                setProgress(Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100));
-            },
-            error => {
-                console.log(error);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(image.name)
-                    .getDownloadURL()
-                    .then(url => {
-                        console.log(url);
-                        const createdAt = timestamp();
-                        collectionRef.add({
-                            uid,
-                            titleValue,
-                            displayName,
-                            privacyValue,
-                            url,
-                            createdAt
+        if (titleValue && image) {
+            const uploadTask = storage.ref(`images/${image.name}`).put(image);
+            uploadTask.on(
+                "state_changed",
+                snapshot => {
+                    setProgress(Math.round(snapshot.bytesTransferred / snapshot.totalBytes * 100));
+                },
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                        .ref("images")
+                        .child(image.name)
+                        .getDownloadURL()
+                        .then(url => {
+                            console.log(url);
+                            const createdAt = timestamp();
+                            collectionRef.add({
+                                uid,
+                                titleValue,
+                                displayName,
+                                privacyValue,
+                                url,
+                                createdAt
+                            });
                         });
-                    });
-            }
-        );
+                }
+            );
+        }
     }
 
     return (
