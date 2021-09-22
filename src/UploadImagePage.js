@@ -44,7 +44,7 @@ const UploadImagePage = () => {
 
     const collectionRef = firestore.collection("images");
     const handleUpload = (e) => {
-        if (titleValue && image) {
+        if (titleValue && image && uid) {
             const uploadTask = storage.ref(`images/${image.name}`).put(image);
             uploadTask.on(
                 "state_changed",
